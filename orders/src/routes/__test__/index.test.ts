@@ -14,8 +14,8 @@ const buildTicket = async () => {
 };
 
 it('fetch orders for an particular user', async () => {
-  const user1 = global.getCookie();
-  const user2 = global.getCookie();
+  const user1 = global.signin();
+  const user2 = global.signin();
 
   const ticket1 = await buildTicket();
   const ticket2 = await buildTicket();

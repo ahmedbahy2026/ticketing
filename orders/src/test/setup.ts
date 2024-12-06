@@ -5,10 +5,10 @@ import jwt from 'jsonwebtoken';
 let mongo: any;
 
 declare global {
-  var getCookie: () => string[];
+  var signin: () => string[];
 }
 
-global.getCookie = () => {
+global.signin = () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   const payload = { id, email: 'test@test.com' };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
