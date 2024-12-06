@@ -1,11 +1,13 @@
 name: tests-orders
 
-on: 
-  pull_request
+on:
+  pull_request:
+    path:
+      - 'orders/**'
 
-jobs: 
-  build: 
+jobs:
+  build:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - run: cd orders && npm i && npm run test:ci

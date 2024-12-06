@@ -1,11 +1,13 @@
 name: tests-tickets
 
-on: 
-  pull_request
+on:
+  pull_request:
+    path:
+      - 'tickets/**'
 
-jobs: 
-  build: 
+jobs:
+  build:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - run: cd tickets && npm i && npm run test:ci
