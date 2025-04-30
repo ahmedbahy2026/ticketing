@@ -37,6 +37,18 @@ Each service runs independently and communicates via NATS Streaming:
 
 ---
 
+### 🔁 Sequence Diagram
+
+![Sequence Diagram](./sequence_diagram.jpeg)
+
+---
+
+### 🧱 Architecture Design
+
+![Architecture Design](./architecture_design.png)
+
+---
+
 ## 🧰 Tech Stack
 
 ### 🖥 Backend
