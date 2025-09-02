@@ -6,60 +6,72 @@ import mongoose from 'mongoose';
 import { OrderStatus } from '@bahy_tickets/common';
 import { natsWrapper } from '../../nats-wrapper';
 
-// it('returns an authorized error if one user tires to delete another user order', async () => {
-//   // create a ticket
-//   const ticket = Ticket.build({ title: 'concert', price: 50 });
-//   await ticket.save();
+it('returns an authorized error if one user tires to delete another user order', async () => {
+  // create a ticket
+  const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: 'concert',
+    price: 50
+  });
+  await ticket.save();
 
-//   // send a request to make an order with this order
-//   const cookie1 = global.getCookie();
-//   const cookie2 = global.getCookie();
-//   const { body: order } = await request(app)
-//     .post('/api/orders')
-//     .set('Cookie', cookie1)
-//     .send({ ticketId: ticket.id })
-//     .expect(201);
+  // send a request to make an order with this order
+  const cookie1 = global.signin();
+  const cookie2 = global.signin();
 
-//   // try to delete the order
-//   await request(app)
-//     .delete(`/api/orders/${order.id}`)
-//     .set('Cookie', cookie2)
-//     .send()
-//     .expect(401);
-// });
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', cookie1)
+    .send({ ticketId: ticket.id })
+    .expect(201);
 
-// it('returns an not-found error the order doesnot exist', async () => {
-//   // create a ticket
-//   const ticket = Ticket.build({ title: 'concert', price: 50 });
-//   await ticket.save();
+  // try to delete the order
+  await request(app)
+    .delete(`/api/orders/${order.id}`)
+    .set('Cookie', cookie2)
+    .send()
+    .expect(401);
+});
 
-//   const cookie = global.getCookie();
-//   const orderId = new mongoose.Types.ObjectId();
+it('returns an not-found error the order doesnot exist', async () => {
+  // create a ticket
+  const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: 'concert',
+    price: 50
+  });
+  await ticket.save();
 
-//   // try to delete the order
-//   await request(app)
-//     .delete(`/api/orders/${orderId}`)
-//     .set('Cookie', cookie)
-//     .send()
-//     .expect(404);
-// });
+  const orderId = new mongoose.Types.ObjectId().toHexString();
 
-// it('returns an authorized error if the user is not signed in', async () => {
-//   // create a ticket
-//   const ticket = Ticket.build({ title: 'concert', price: 50 });
-//   await ticket.save();
+  // try to delete the order
+  await request(app)
+    .delete(`/api/orders/${orderId}`)
+    .set('Cookie', global.signin())
+    .send()
+    .expect(404);
+});
 
-//   // send a request to make an order with this order
-//   const cookie1 = global.getCookie();
-//   const { body: order } = await request(app)
-//     .post('/api/orders')
-//     .set('Cookie', cookie1)
-//     .send({ ticketId: ticket.id })
-//     .expect(201);
+it('returns an authorized error if the user is not signed in', async () => {
+  // create a ticket
+  const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: 'concert',
+    price: 50
+  });
+  await ticket.save();
 
-//   // try to delete the order
-//   await request(app).delete(`/api/orders/${order.id}`).send().expect(401);
-// });
+  // send a request to make an order with this order
+  const cookie1 = global.signin();
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', cookie1)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  // try to delete the order
+  await request(app).delete(`/api/orders/${order.id}`).send().expect(401);
+});
 
 it('delete the order if everything is OK', async () => {
   // create a ticket
@@ -71,7 +83,7 @@ it('delete the order if everything is OK', async () => {
   await ticket.save();
 
   // send a request to make an order with this order
-  const cookie = global.getCookie();
+  const cookie = global.signin();
   const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', cookie)
@@ -100,7 +112,7 @@ it('emit an order cancelled event', async () => {
   await ticket.save();
 
   // send a request to make an order with this order
-  const cookie = global.getCookie();
+  const cookie = global.signin();
   const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', cookie)

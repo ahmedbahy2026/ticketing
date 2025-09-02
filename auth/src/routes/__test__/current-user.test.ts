@@ -1,9 +1,8 @@
 import request from 'supertest';
 import app from '../../app';
-import { signupAndGetCookie } from '../../services/signupAndGetCookie';
 
 it('responds with details about the current user', async () => {
-  const cookie = await signupAndGetCookie('test@test.com', 'test1234');
+  const cookie = global.signin();
 
   const response = await request(app)
     .get('/api/users/currentuser')

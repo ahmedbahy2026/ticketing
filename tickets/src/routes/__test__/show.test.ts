@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../../app';
-import { getCookie } from '../../services/getCookie';
 import mongoose from 'mongoose';
 
 it(`responds a 404 Not Found if there's no a tikcet with that id`, async () => {
@@ -11,7 +10,7 @@ it(`responds a 404 Not Found if there's no a tikcet with that id`, async () => {
 it(`responds a 200 OK if there's a tikcet with that id`, async () => {
   const response = await request(app)
     .post('/api/tickets')
-    .set('Cookie', getCookie())
+    .set('Cookie', global.signin())
     .send({ title: 'SomeTitle', price: 100 })
     .expect(201);
 

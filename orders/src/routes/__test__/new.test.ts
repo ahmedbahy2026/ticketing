@@ -10,7 +10,7 @@ it('return an error if the ticket is not found', async () => {
   const ticketId = new mongoose.Types.ObjectId();
   return request(app)
     .post('/api/orders')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({ ticketId })
     .expect(404);
 });
@@ -34,7 +34,7 @@ it('returns an error if the ticket is reserved', async () => {
 
   await request(app)
     .post('/api/orders')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({ ticketId: ticket.id })
     .expect(400);
 });
@@ -49,7 +49,7 @@ it('reserve a ticket', async () => {
 
   await request(app)
     .post('/api/orders')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({ ticketId: ticket.id })
     .expect(201);
 });
@@ -64,7 +64,7 @@ it('emit an order created event', async () => {
 
   await request(app)
     .post('/api/orders')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({ ticketId: ticket.id })
     .expect(201);
 

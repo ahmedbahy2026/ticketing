@@ -15,7 +15,7 @@ it('fetches the order', async () => {
   await ticket.save();
 
   // make a request to build an order with this ticket
-  const cookie = global.getCookie();
+  const cookie = global.signin();
   const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', cookie)
@@ -42,8 +42,8 @@ it('returns an error if one user tries to fetch another user order', async () =>
   await ticket.save();
 
   // make a request to build an order with this ticket
-  const cookie1 = global.getCookie();
-  const cookie2 = global.getCookie();
+  const cookie1 = global.signin();
+  const cookie2 = global.signin();
   const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', cookie1)

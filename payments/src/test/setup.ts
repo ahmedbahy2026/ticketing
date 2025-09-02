@@ -2,13 +2,11 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-let mongo: any;
-
 declare global {
-  var getCookie: (userId?: string) => string[];
+  var signin: (userId?: string) => string[];
 }
 
-global.getCookie = (userId?: string) => {
+global.signin = (userId?: string) => {
   const id = userId || new mongoose.Types.ObjectId().toHexString();
   const payload = { id, email: 'test@test.com' };
   const token = jwt.sign(payload, process.env.JWT_KEY!);
@@ -22,6 +20,8 @@ jest.mock('../nats-wrapper');
 
 process.env.STRIPE_KEY =
   'sk_test_51Pwgo6P30MQF7n3CBnAY9g5ERzJAR3VS0ZTq9u1J7CusjfmUp605JQAP35KeUynXTCAPg8lwetG1C2TW1sgJmlta00KaVBZh00';
+
+let mongo: any;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdf';

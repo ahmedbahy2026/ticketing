@@ -11,7 +11,7 @@ import { Payment } from '../../models/payment';
 it('returns a 404 error if the order not found', async () => {
   return request(app)
     .post('/api/payments')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({
       orderId: new mongoose.Types.ObjectId().toHexString(),
       token: 'lkjsd'
@@ -32,7 +32,7 @@ it('returns a 401 when purchasing an order that doesnot belong to the user', asy
 
   return request(app)
     .post('/api/payments')
-    .set('Cookie', global.getCookie())
+    .set('Cookie', global.signin())
     .send({
       orderId,
       token: 'lkjsd'
@@ -54,7 +54,7 @@ it('returns a 400 when purchasing a cancelled order', async () => {
 
   return request(app)
     .post('/api/payments')
-    .set('Cookie', global.getCookie(userId))
+    .set('Cookie', global.signin(userId))
     .send({
       orderId,
       token: 'lkjsd'
@@ -77,7 +77,7 @@ it('returns a 400 when purchasing a cancelled order', async () => {
 
 //   await request(app)
 //     .post('/api/payments')
-//     .set('Cookie', global.getCookie(userId))
+//     .set('Cookie', global.signin(userId))
 //     .send({ orderId, token: 'tok_visa' })
 //     .expect(201);
 
@@ -103,7 +103,7 @@ it('returns a 201 with valid inputs', async () => {
 
   await request(app)
     .post('/api/payments')
-    .set('Cookie', global.getCookie(userId))
+    .set('Cookie', global.signin(userId))
     .send({ orderId, token: 'tok_visa' })
     .expect(201);
 
